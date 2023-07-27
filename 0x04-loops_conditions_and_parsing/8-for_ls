@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#script to print The content of the current directory
+files=( * )
+for file in "${files[@]}";do
+
+	echo "${file#*-}"
+done
