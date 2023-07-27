@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#this is a bash script to demonstrate while loop
+
+x=1
+while [ $x -le 10 ]
+do
+	echo "Best School"
+	x=$(( $x + 1 ))
+done
