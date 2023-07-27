@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#while with if and elif and else operation _bad_luck_8_is_your_chance
+x=1
+while [ $x -le 10 ]
+do
+if [ $x -ne 4 ] && [ $x -ne 8 ]
+then
+	echo "Best School"
+elif [ $x -eq 4 ]
+then
+	echo "bad luck"
+else
+	echo "good luck"
+fi
+x=$(( x + 1 ))
+done
