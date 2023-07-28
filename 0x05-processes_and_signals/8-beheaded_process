@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#to kill 7-highlander
+# shellcheck disable=SC2009
+pid=$(ps -aux | grep "[7]-highlander" | awk '{print $2}')
+kill -kill "$pid"
