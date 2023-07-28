@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#alot harder than you think
+
+sigTerm_custom_handler(){
+
+	echo "I hate the kill command"
+	rm -f /var/run/myscript.pid
+	exit 0
+}
+
+sigint_custom_handler(){
+
+	echo "Y U no love me?!"
+}
+
+custom_SIGQUIT_handler (){
+	sudo rm -f /var/run/myscript.pid
+	exit 0
+}
+
+trap sigTerm_custom_handler SIGTERM
+trap sigint_custom_handler SIGINT
+trap custom_SIGQUIT_handler SIGQUIT
+echo $$ >  /var/run/myscript.pid
+while :
+do
+echo "To infinity and beyond"
+sleep 2
+done
