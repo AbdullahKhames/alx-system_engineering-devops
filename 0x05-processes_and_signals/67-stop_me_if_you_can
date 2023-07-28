@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#killme if you can
+pkill -f "7-highlander"
