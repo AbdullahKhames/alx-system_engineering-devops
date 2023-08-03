@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#script to change localhost and facebook mapping
+# saving all the ip addresses
+ips=$(hostname -I)
+
+# splitting them by space
+ips=(${ips//" "/ })
+
+# Print each ip address line by line
+for ip in "${ips[@]}";
+do
+  printf "$ip\n"
+done
