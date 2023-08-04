@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 #script to change localhost and facebook mapping
-
-netstat -ln  | grep :98
-echo $?
+nc -l 98
