@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 #script to change localhost and facebook mapping
 # saving all the ip addresses
-ifconfig | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | cut -b 11-
+ip -4 -o addr show | awk '{print $4}' | cut -d "/" -f 1
