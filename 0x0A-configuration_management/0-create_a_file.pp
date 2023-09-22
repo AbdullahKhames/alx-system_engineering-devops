@@ -1,3 +1,4 @@
+# This is a single file creating script
 file{'/tmp/school':
     owner   => 'www-data',
     group   => 'www-data',
