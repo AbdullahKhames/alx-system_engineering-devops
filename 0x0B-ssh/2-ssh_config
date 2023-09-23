@@ -1,1 +1,7 @@
-#!/usr/bin/bash
+#changing ssh config for the local ssh client
+
+Host my_ubuntu
+    HostName 	54.174.3.157
+    User ubuntu
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
