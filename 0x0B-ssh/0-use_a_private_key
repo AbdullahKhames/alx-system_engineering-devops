@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-ssh ubuntu@54.174.3.157
+private_key_path="~/.ssh/school"
+ssh -i "$private_key_path" ubuntu@54.174.3.157
