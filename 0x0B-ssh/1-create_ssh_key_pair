@@ -1,1 +1,2 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
+ssh-keygen -n 4096 -f "school" -N "betty"
