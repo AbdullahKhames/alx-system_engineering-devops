@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# scp $file_path $user_naame@$ip:$dir_path $ssh_path
+
+if [ "$#" -lt 3 ]
+then
+  echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+  exit 0
+fi  
+file_path="$1"
+dir_path="~/"
+ip_address="$2"
+user_name="$3"
+ssh_path="$4"
+all="$file_path $user_name@$ip_address:$dir_path $ssh_path"
+echo "$all"
+scp $all
