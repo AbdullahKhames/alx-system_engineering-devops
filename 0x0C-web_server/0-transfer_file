@@ -11,5 +11,9 @@ file_path="$1"
 ip_address="$2"
 user_name="$3"
 ssh_path="$4"
-all="$file_path $user_name@$ip_address:$HOME $ssh_path"
-scp "$all"
+if [ "$#" -lt 4 ]
+then
+    scp  -o StrictHostKeyChecking=no "$file_path" "$user_name"@"$ip_address":~/
+else
+    scp  -o StrictHostKeyChecking=no "$file_path" "$user_name"@"$ip_address":~/ -i "$ssh_path"
+fi
