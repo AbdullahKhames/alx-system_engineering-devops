@@ -15,5 +15,5 @@ if [ "$#" -lt 4 ]
 then
     scp  -o StrictHostKeyChecking=no "$file_path" "$user_name@$ip_address":~/
 else
-    scp  -o StrictHostKeyChecking=no "$file_path" "$user_name@$ip_address":~/ -i "$ssh_path"
+    scp -i "$ssh_path" -o StrictHostKeyChecking=no "$file_path" "$user_name@$ip_address":~/
 fi
