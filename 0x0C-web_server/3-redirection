@@ -3,19 +3,47 @@
 sudo apt update
 sudo apt install -y nginx
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
-echo "Hello Word!" > /etc/nginx/html/index.html
-printf %s "server {
+# Directory where you want to store your web files
+dir="/var/www/techiocean.tech"
+
+# Check if the directory exists, and create it if not
+if [ ! -d "$dir" ]; then
+    sudo mkdir -p "$dir"
+fi
+
+# Create an index.html file with "Hello World!" content inside the directory
+if [ -e "$dir"/index.html ]; then
+        sudo rm "$dir"/index.html
+fi
+sudo touch "$dir"/index.html
+sudo sh -c 'echo "Hello World!" > "'"$dir"'/index.html"'
+
+
+# Nginx configuration file
+conf_file="/etc/nginx/sites-available/techiocean.tech.conf"
+
+# Remove the existing file if it exists and then create it
+sudo rm -f "$conf_file"
+sudo touch "$conf_file"
+
+sudo sh -c "echo 'server {
     listen 80;
     listen [::]:80 default_server;
-    root   /etc/nginx/html;
+    root   $dir;
     index  index.html index.htm;
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
-}" > /etc/nginx/sites-available/default
-
+}' > '$conf_file'"
+# Check if the symbolic link already exists, and create it if not
+if [ -e "/etc/nginx/sites-enabled/techiocean.tech.conf" ]; then
+	sudo unlink "/etc/nginx/sites-enabled/techiocean.tech.conf"
+fi
+ sudo ln -s "$conf_file" "/etc/nginx/sites-enabled/"
+# Test Nginx configuration
 sudo nginx -t
-sudo service nginx reload
+
+# Reload Nginx to apply changes
+sudo service nginx reload restart
+# Exit the script with a success code
 exit 0
