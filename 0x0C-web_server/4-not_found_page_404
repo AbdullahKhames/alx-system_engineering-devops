@@ -24,7 +24,7 @@ sudo touch "$base_dir$avail$file"
 sudo rm "$base_var$nf"
 sudo touch "$base_var$nf"
 
-echo "Ceci n'est pas une page" | sudo tee "$base_var$nf" > /dev/null
+echo "Ceci n'est pas une page\n" | sudo tee "$base_var$nf" > /dev/null
 
 echo "server {
     listen 80 default_server;
