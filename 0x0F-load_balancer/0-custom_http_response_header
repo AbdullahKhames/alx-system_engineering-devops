@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# fil to add custom header to nginx
+sudo apt-get update
+sudo apt-get install nginx
+
+base_var="/var/www/techiocean.tech"
+nf="/custom_not_found"
+idx="/index.html"
+base_dir="/etc/nginx"
+avail="/sites-available"
+enab="/sites-enabled"
+file="/techiocean.tech"
+server_hostname=$(hostname)
+
+if [ ! -d "$base_var" ]; then
+    sudo mkdir -p "$base_var"
+fi
+echo "Hello World!" | sudo tee "$base_var$idx" > /dev/null
+
+echo "Ceci n'est pas une page
+" | sudo tee "$base_var$nf" > /dev/null
+
+sudo rm "$base_dir$avail"/default
+sudo unlink "$base_dir$enab"/default
+sudo unlink "$base_dir$enab$file"
+
+
+echo "server{
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root ${base_var};
+    index index.html;
+    add_header  X-Served-By  $server_hostname;
+    error_page 404 ${base_var}${nf};
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}" | sudo tee "$base_dir$avail$file" > /dev/null
+
+sudo ln -s "$base_dir$avail$file" "$base_dir$enab"
+
+sudo nginx -t
+
+sudo service nginx restart
