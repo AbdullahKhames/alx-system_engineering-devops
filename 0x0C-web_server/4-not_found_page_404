@@ -9,7 +9,7 @@ avail="/sites-available"
 enab="/sites-enabled"
 base_var="/var/www/techiocean.tech"
 file="/techiocean.tech"
-
+nf=/custom_not_found.html
 
 if [ ! -d "$base_var" ]; then
     sudo mkdir -p "$base_var"
@@ -21,11 +21,17 @@ sudo unlink "$base_dir$enab$file"
 
 sudo touch "$base_dir$avail$file"
 
+sudo rm "$base_var$nf"
+sudo touch "$base_var$nf"
+
+echo "Ceci n'est pas une page" | sudo tee "$base_var$nf" > /dev/null
+
 echo "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    root /var/www/techiocean.tech;
+    root ${base_var};
     index index.html;
+    error_page 404 ${nf}
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
