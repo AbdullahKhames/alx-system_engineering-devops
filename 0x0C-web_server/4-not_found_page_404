@@ -31,7 +31,7 @@ echo "server {
     listen [::]:80 default_server;
     root ${base_var};
     index index.html;
-    error_page 404 ${nf}
+    error_page 404 ${nf};
     location /redirect_me {
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
