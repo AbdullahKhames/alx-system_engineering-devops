@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+sudo sed -i '/backend techi-backend/, /balance roundrobin/{/backend techi-backend/!d}' sedfile
+sudo sed -i 's/backend techi-backend/backend techi-backend\
+    server web-01 54.174.3.157:80 check\
+    server web-02 54.242.203.162:80 check\
+    balance roundrobin/' sedfile
+sudo sed -i '/frontend techi-frontend/, /balance roundrobin/{/frontend techi-frontend/!d}' sedfile
+sudo sed -i 's/frontend techi-frontend/frontend techi-frontend\
+    bind 0.0.0.10:800\
+    mode hhtps\
+    default_backend techi-backend/' sedfile

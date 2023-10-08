@@ -16,29 +16,24 @@ sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
 sudo apt update
 sudo apt-get install -y haproxy=2.6.\*
 sudo cp -a /etc/haproxy/haproxy.cfg{,.original_copy}
-# echo "frontend techi-frontend
-#     bind *:80
-#     mode http
-#     default_backend techi-backend
-# backend techi-backend
-#     balance roundrobin
-#     server web-01 54.174.3.157:80 check
-#     server web-02 54.242.203.162:80 check" | sudo tee -a "/etc/haproxy/haproxy.cfg"
-# echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 haproxy_cfg="/etc/haproxy/haproxy.cfg"
 
 if [ -e "$haproxy_cfg" ]; then
-    # Check if the frontend and backend sections exist
     if grep -q "frontend techi-frontend" "$haproxy_cfg" && grep -q "backend techi-backend" "$haproxy_cfg"; then
         # Update the frontend and backend sections
-        sudo sed -i '/frontend techi-frontend/,/backend techi-backend/ {
-            /frontend techi-frontend/ {
-                n; /backend techi-backend/! {N; s/.*/    bind *:80\n    mode http\n    default_backend techi-backend/}
-            }
-        }' "$haproxy_cfg"
+sudo sed -i '/backend techi-backend/, /balance roundrobin/{/backend techi-backend/!d}' "$haproxy_cfg"
+sudo sed -i 's/backend techi-backend/backend techi-backend\
+        server web-01 54.174.3.157:80 check\
+        server web-02 54.242.203.162:80 check\
+        balance roundrobin/' "$haproxy_cfg"
+sudo sed -i '/frontend techi-frontend/, /balance roundrobin/{/frontend techi-frontend/!d}' "$haproxy_cfg"
+sudo sed -i 's/frontend techi-frontend/frontend techi-frontend\
+        bind 0.0.0.0:8080\
+        mode http\
+        default_backend techi-backend/' "$haproxy_cfg"
     else
 echo "frontend techi-frontend
-        bind *:80
+        bind *:8080
         mode http
         default_backend techi-backend
 backend techi-backend

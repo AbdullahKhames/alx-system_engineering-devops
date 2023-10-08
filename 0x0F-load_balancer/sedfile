@@ -1,0 +1,8 @@
+frontend techi-frontend
+    bind 0.0.0.10:800
+    mode hhtps
+    default_backend techi-backend
+backend techi-backend
+    server web-01 54.174.3.157:80 check
+    server web-02 54.242.203.162:80 check
+    balance roundrobin
