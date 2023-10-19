@@ -1,46 +1,26 @@
 #!/usr/bin/env bash
-# to make a redirection url
+# A bash script that installs nginx on an ubuntu machine.
+# This scripts also configures the default webpage served to be "Hello World!"
+# When request url matches /redirect_me, it redirects to my youtube channel.
+# When a page/file not found in the document root is requested, the 404.html
+# page is served to the client as stated with the error_page directive.
 
-sudo apt-get update
-sudo apt-get install nginx
+sudo apt-get update -y
 
-base_dir="/etc/nginx"
-avail="/sites-available"
-enab="/sites-enabled"
-base_var="/var/www/techiocean.tech"
-file="/techiocean.tech"
-nf=/custom_not_found.html
+sudo apt-get install nginx -y
 
-if [ ! -d "$base_var" ]; then
-    sudo mkdir -p "$base_var"
-fi
-echo "Hello World!" | sudo tee "$base_var"/index.html > /dev/null
+echo "Hello World!" | sudo dd status=none of=/var/www/html/index.html
 
-sudo rm "$base_dir$avail$file"
-sudo unlink "$base_dir$enab$file"
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
 
-sudo touch "$base_dir$avail$file"
+REDIRECT_LOCATION="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
 
-sudo rm "$base_var$nf"
-sudo touch "$base_var$nf"
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
 
-echo "Ceci n'est pas une page
-" | sudo tee "$base_var$nf" > /dev/null
+sudo sed -i "53i $REDIRECT_LOCATION" /etc/nginx/sites-available/default
 
-echo "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root ${base_var};
-    index index.html;
-    error_page 404 ${nf};
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}" | sudo tee "$base_dir$avail$file" > /dev/null
-sudo ln -s "$base_dir$avail$file" "$base_dir$enab"
+NOT_FOUND="\\\n\terror_page 404 /404.html;\n\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
 
-sudo nginx -t
-sudo service nginx restart
+sudo sed -i "53i $NOT_FOUND" /etc/nginx/sites-available/default
+
+sudo service nginx reload

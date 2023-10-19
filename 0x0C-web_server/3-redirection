@@ -1,39 +1,18 @@
 #!/usr/bin/env bash
-# to make a redirection url
+# A bash script that installs nginx on an ubuntu machine.
+# This scripts also configures the default webpage served to be "Hello World!"
+# When request url matches /redirect_me, it redirects to my youtube channel.
 
-sudo apt-get update
-sudo apt-get install nginx
+sudo apt-get update -y
 
-base_dir="/etc/nginx"
-avail="/sites-available"
-enab="/sites-enabled"
-base_var="/var/www/techiocean.tech"
-file="/techiocean.tech"
+sudo apt-get install nginx -y
 
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
 
-if [ ! -d "$base_var" ]; then
-    sudo mkdir -p "$base_var"
-fi
-echo "Hello World!" | sudo tee "$base_var"/index.html > /dev/null
+redirect_location="\\\n\tlocation = /redirect_me {\n\t\t return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
 
-sudo rm "$base_dir$avail$file"
-sudo unlink "$base_dir$enab$file"
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bakup
 
-sudo touch "$base_dir$avail$file"
+sudo sed -i "53i $redirect_location" /etc/nginx/sites-available/default
 
-echo "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/techiocean.tech;
-    index index.html;
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}" | sudo tee "$base_dir$avail$file" > /dev/null
-sudo ln -s "$base_dir$avail$file" "$base_dir$enab"
-
-sudo nginx -t
 sudo service nginx restart
