@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Run software with diffrent user
-sudo -u "$1" whoami
