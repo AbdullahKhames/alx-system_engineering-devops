@@ -1,54 +1,12 @@
 #!/usr/bin/env bash
-# fil to add custom header to nginx
-# Find the PID of the apt-get process holding the lock
-sudo apt-get install -y --no-install-recommends software-properties-common
-sleep 5
-while true; do
-   if ps aux | grep -i "[s]udo apt-get install --no-install-recommends software-properties-common"; then
-    echo "The command is running."
-    sleep 5
-    else
-        break
-    fi
-  
-done
-sudo add-apt-repository -y ppa:vbernat/haproxy-2.6
-sudo apt update
-sudo apt-get install -y haproxy=2.6.\*
-sudo cp -a /etc/haproxy/haproxy.cfg{,.original_copy}
-haproxy_cfg="/etc/haproxy/haproxy.cfg"
-
-if [ -e "$haproxy_cfg" ]; then
-    if grep -q "frontend techi-frontend" "$haproxy_cfg" && grep -q "backend techi-backend" "$haproxy_cfg"; then
-        # Update the frontend and backend sections
-sudo sed -i '/backend techi-backend/, /balance roundrobin/{/backend techi-backend/!d}' "$haproxy_cfg"
-sudo sed -i 's/backend techi-backend/backend techi-backend\
-        server web-01 54.174.3.157:80 check\
-        server web-02 54.242.203.162:80 check\
-        balance roundrobin/' "$haproxy_cfg"
-sudo sed -i '/frontend techi-frontend/, /balance roundrobin/{/frontend techi-frontend/!d}' "$haproxy_cfg"
-sudo sed -i 's/frontend techi-frontend/frontend techi-frontend\
-        bind 0.0.0.0:8080\
-        mode http\
-        default_backend techi-backend/' "$haproxy_cfg"
-    else
-echo "frontend techi-frontend
-        bind *:8080
-        mode http
-        default_backend techi-backend
-backend techi-backend
-        balance roundrobin
-        server web-01 54.174.3.157:80 check
-        server web-02 54.242.203.162:80 check" | sudo tee -a "$haproxy_cfg"
-    fi
-fi
-
-# Check if the ENABLED=1 line exists in the default file
-default_file="/etc/default/haproxy"
-if [ -e "$default_file" ]; then
-    if ! grep -q "ENABLED=1" "$default_file"; then
-        # Append the ENABLED=1 line to the default file
-        echo "ENABLED=1" | sudo tee -a "$default_file"
-    fi
-fi
-sudo service haproxy restart
+# Install the load balancer
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install haproxy
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.original
+sudo sh -c 'echo "\nlisten myserver\n\tbind *:80\n\tbalance roundrobin\n\tserver web-01 54.174.3.157 check\n\tserver web-02 54.242.203.162 check\n" >> /etc/haproxy/haproxy.cfg'
+# Testing the HAproxy configuration file
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+sudo service haproxy start

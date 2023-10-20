@@ -1,46 +1,25 @@
 #!/usr/bin/env bash
-# to make a redirection url
+# Customizing a 404-error_page
 
+# Updating Packages before performing installations
 sudo apt-get update
-sudo apt-get install nginx
+sudo apt-get install -y nginx
 
-base_dir="/etc/nginx"
-avail="/sites-available"
-enab="/sites-enabled"
-base_var="/var/www/techiocean.tech"
-file="/techiocean.tech"
-nf=/custom_not_found.html
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-if [ ! -d "$base_var" ]; then
-    sudo mkdir -p "$base_var"
-fi
-echo "Hello World!" | sudo tee "$base_var"/index.html > /dev/null
+# Performing a "moved permanently redirection" (301)
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/AbdullahKhames permanent;"
+sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 
-sudo rm "$base_dir$avail$file"
-sudo unlink "$base_dir$enab$file"
+# Creating a 404 Custom error page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
 
-sudo touch "$base_dir$avail$file"
+sudo sed -i "s/listen 80 default_server;/$new_string/" /etc/nginx/sites-enabled/default
 
-sudo rm "$base_var$nf"
-sudo touch "$base_var$nf"
-
-echo "Ceci n'est pas une page
-" | sudo tee "$base_var$nf" > /dev/null
-
-echo "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root ${base_var};
-    index index.html;
-    error_page 404 ${nf};
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}" | sudo tee "$base_dir$avail$file" > /dev/null
-sudo ln -s "$base_dir$avail$file" "$base_dir$enab"
-
+# Testing configurations for syntax errors
 sudo nginx -t
+
+# restart nginx after implementing changes
 sudo service nginx restart

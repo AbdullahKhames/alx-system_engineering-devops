@@ -1,39 +1,16 @@
 #!/usr/bin/env bash
-# to make a redirection url
+#  A Script that configures a new Ubuntu machine to Perform a 301-redirection
 
+# Upadating Packages before Installations
 sudo apt-get update
-sudo apt-get install nginx
+sudo apt-get install -y nginx
 
-base_dir="/etc/nginx"
-avail="/sites-available"
-enab="/sites-enabled"
-base_var="/var/www/techiocean.tech"
-file="/techiocean.tech"
+# Creating an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
+# Performing a 301 Redirection
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/AbdullahKhames permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
-if [ ! -d "$base_var" ]; then
-    sudo mkdir -p "$base_var"
-fi
-echo "Hello World!" | sudo tee "$base_var"/index.html > /dev/null
-
-sudo rm "$base_dir$avail$file"
-sudo unlink "$base_dir$enab$file"
-
-sudo touch "$base_dir$avail$file"
-
-echo "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/techiocean.tech;
-    index index.html;
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-}" | sudo tee "$base_dir$avail$file" > /dev/null
-sudo ln -s "$base_dir$avail$file" "$base_dir$enab"
-
-sudo nginx -t
+# Restarting Nginx service
 sudo service nginx restart
