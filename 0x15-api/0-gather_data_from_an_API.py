@@ -24,7 +24,7 @@ with tasks({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):'
     print(emp_data)
     for todo in completed_todos:
         task_name = todo.get('title')
-        print(f'\t {task_name}'.expandtabs(4))
+        print(f'\t {task_name}')
 
 
 if __name__ == "__main__":
