@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """module to connect to api with requests package"""
-from sys import argv
 from requests import get
+from sys import argv
 
 base_url = 'https://jsonplaceholder.typicode.com'
 todo = '/todos'
@@ -19,10 +19,15 @@ completed_todos = [todo for todo in todos if todo['completed'] is True]
 NUMBER_OF_DONE_TASKS = len(completed_todos)
 TOTAL_NUMBER_OF_TASKS = len(todos)
 user_data = users_resp.json()
-EMPLOYEE_NAME = user_data['name']
-emp_data = f'Employee {EMPLOYEE_NAME} is done with tasks({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):'
+EMPLOYEE_NAME = user_data.get('name')
+emp_data = f'Employee {EMPLOYEE_NAME} is done \
+with tasks({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):'
 
 print(emp_data)
 for todo in completed_todos:
-    task_name = todo['title']
+    task_name = todo.get('title')
     print(f'\t {task_name}'.expandtabs(4))
+
+
+if __name__ == "__main__":
+    pass
