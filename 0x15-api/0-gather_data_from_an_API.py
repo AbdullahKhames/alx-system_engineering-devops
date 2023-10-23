@@ -5,6 +5,7 @@ from sys import argv
 
 
 def connect():
+    """connect function to call the api"""
     base_url = 'https://jsonplaceholder.typicode.com'
     todo = '/todos'
     users = '/users'
@@ -28,4 +29,5 @@ with tasks({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):'
 
 
 if __name__ == "__main__":
+    """prevents module from running when imported"""
     connect()

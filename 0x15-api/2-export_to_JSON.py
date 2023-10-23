@@ -7,6 +7,7 @@ from sys import argv
 
 
 def connect():
+    """connect function to call the api"""
     base_url = 'https://jsonplaceholder.typicode.com'
     todo = '/todos'
     users = '/users'
@@ -32,4 +33,5 @@ def connect():
 
 
 if __name__ == "__main__":
+    """prevents module from running when imported"""
     connect()
