@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ module to test reddit api"""
-from requests import get, post
 from requests.auth import HTTPBasicAuth
+from requests import get, post
 
 
 def remove_zeroes(data):
