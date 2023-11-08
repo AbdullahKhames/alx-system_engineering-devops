@@ -25,7 +25,7 @@ def top_ten(subreddit):
     full_url = 'https://www.reddit.com/r/' + subreddit + '/hot.json'
     params = {
         'raw_json': 1,
-        'limit': 9,
+        'limit': 10,
     }
     headers = {
         'User-Agent': 'script:test.api:v1 (by /u/5miiss96)',
