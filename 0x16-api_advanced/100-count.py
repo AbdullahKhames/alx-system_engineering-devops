@@ -130,6 +130,7 @@ def parse_dict1(word_dict):
 
 
 def count_words(subreddit, word_list):
+    """count wrds in a subreddit"""
     word_dict = {}
     titles = recurse(subreddit)
     if titles is None or len(titles) == 0:
@@ -138,7 +139,6 @@ def count_words(subreddit, word_list):
         count = count_word_recursive(titles, word)
         if count is not None and count != 0:
             word_dict[word] = count
-    print(word_dict)
     new_dict = parse_dict(word_dict)
     if new_dict is None:
         return
