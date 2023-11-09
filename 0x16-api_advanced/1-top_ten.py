@@ -32,7 +32,8 @@ def top_ten(subreddit):
     }
     response = get(full_url,
                    headers=headers,
-                   params=params)
+                   params=params,
+                   allow_redirects=False)
     if response.status_code != 200:
         print(None)
     data = search_json(response.json(), 'title')
