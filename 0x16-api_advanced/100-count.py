@@ -81,7 +81,8 @@ def parse_dict(word_dict):
     swap_indices = get_swap_indices(new_dict)
     for i, j in zip(swap_indices[::2], swap_indices[1::2]):
         swap(new_dict, i, j)
-    return new_dict
+
+    return {k.lower(): v for k, v in new_dict.items()}
 
 
 def count_similar1(word_dict):
