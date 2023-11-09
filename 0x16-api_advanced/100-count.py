@@ -38,7 +38,8 @@ def recurse(subreddit, hot_list=[], last_after=None):
 
 
 def count_word(titles, searched_key):
-    """function to count the number of times a word appears in a list of titles"""
+    """function to count the number of times
+     a word appears in a list of titles"""
     if titles is None:
         return None
     count = 0
@@ -49,18 +50,34 @@ def count_word(titles, searched_key):
     return count
 
 
+def count_word_recursive(titles, searched_key, index=0, count=0):
+    """Recursive function to count the number of times
+     a word appears in a list of titles"""
+    if titles is None or index == len(titles):
+        return count
+    else:
+        for word in titles[index].split():
+            if word.lower() == searched_key.lower():
+                count += 1
+        return count_word_recursive(titles, searched_key, index + 1, count)
+
+
 def get_swap_indices(new_dict):
+    """function to check if equal value it changes the index of the key"""
     last_val = None
     last_k = None
     swap_indices = []
     for i, (k, v) in enumerate(new_dict.items()):
-        if last_val is not None and v == last_val and k.lower() < last_k.lower():
+        if (last_val is not None
+                and v == last_val
+                and k.lower() < last_k.lower()):
             swap_indices.extend([i - 1, i])
         last_val, last_k = v, k
     return swap_indices
 
 
 def count_similar(new_dict):
+    """if dict has similar keys merge them"""
     last_k = None
     for k in list(new_dict.keys()):
         if last_k is not None and k.lower() == last_k.lower():
@@ -70,14 +87,20 @@ def count_similar(new_dict):
 
 
 def swap(new_dict, i, j):
+    """function to swap two items in a dict"""
     tups = list(new_dict.items())
     tups[i], tups[j] = tups[j], tups[i]
 
 
 def parse_dict(word_dict):
-    new_dict = dict(sorted(word_dict.items(), key=lambda tup: (tup[1]), reverse=True))
+    """do the required parsing of the dict"""
+    if word_dict is None or len(word_dict) == 0:
+        return None
+    new_dict = dict(sorted(word_dict.items(),
+                           key=lambda tup: (tup[1]), reverse=True))
     count_similar(new_dict)
-    new_dict = dict(sorted(new_dict.items(), key=lambda tup: (tup[1]), reverse=True))
+    new_dict = dict(sorted(new_dict.items(),
+                           key=lambda tup: (tup[1]), reverse=True))
     swap_indices = get_swap_indices(new_dict)
     for i, j in zip(swap_indices[::2], swap_indices[1::2]):
         swap(new_dict, i, j)
@@ -86,10 +109,8 @@ def parse_dict(word_dict):
 
 
 def count_similar1(word_dict):
-    # Sort keys (case-insensitive)
+    """if dict has similar keys merge them"""
     sorted_items = sorted(word_dict.items(), key=lambda tup: tup[0].lower())
-
-    # Merge items with similar keys
     new_dict = {}
     for k, v in sorted_items:
         k_lower = k.lower()
@@ -102,19 +123,25 @@ def count_similar1(word_dict):
 
 
 def parse_dict1(word_dict):
+    """do the required parsing of the dict"""
     word_dict = count_similar1(word_dict)
-
-    return dict(sorted(word_dict.items(), key=lambda tup: (-tup[1], tup[0].lower())))
+    return dict(sorted(word_dict.items(),
+                       key=lambda tup: (-tup[1], tup[0].lower())))
 
 
 def count_words(subreddit, word_list):
     word_dict = {}
     titles = recurse(subreddit)
+    if titles is None or len(titles) == 0:
+        return
     for word in word_list:
-        count = count_word(titles, word)
-        if count != 0:
+        count = count_word_recursive(titles, word)
+        if count is not None and count != 0:
             word_dict[word] = count
+    print(word_dict)
     new_dict = parse_dict(word_dict)
+    if new_dict is None:
+        return
     for k, v in new_dict.items():
         print('{}: {}'.format(k, v))
 
