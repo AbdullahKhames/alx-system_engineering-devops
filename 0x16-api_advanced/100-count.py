@@ -147,4 +147,4 @@ def count_words(subreddit, word_list):
 
 
 if __name__ == '__main__':
-    print(count_words('programming', ['python', 'java', 'javascript']))
+    pass
