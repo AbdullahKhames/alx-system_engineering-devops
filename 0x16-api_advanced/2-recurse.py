@@ -38,7 +38,7 @@ Dq9DemXs-aIjVE_g613LCbuN3TnKR8nxID9EgB1GjZqOA'
                    params=params,
                    allow_redirects=False)
     if response.status_code != 200:
-        return titles
+        return None
     children = []
     for child in response.json().get('data').get('children'):
         children.append(child.get('data'))
