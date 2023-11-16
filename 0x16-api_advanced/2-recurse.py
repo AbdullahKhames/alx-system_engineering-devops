@@ -20,18 +20,8 @@ def recurse(subreddit, hot_list=[], last_after=None):
     }
     headers = {
         'User-Agent': 'script:test.api:v1 (by /u/5miiss96)',
-        'Authorization': 'bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI\
-1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdW\
-NZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk5NTI5NTE2\
-LjExNTc5NywiaWF0IjoxNjk5NDQzMTE2LjExNTc5NywianRpIjoiMWRYMmZKSXp0\
-V3BBQjJCdHpGY21xMUoxZVc5aUZnIiwiY2lkIjoiUllhZUYzcWtIcTZvRmFwZ0k3cGI\
-zUSIsImxpZCI6InQyX21qNGJoNjdncyIsImFpZCI6InQyX21qNGJoNjdncyIsImxjYSI\
-6MTY5ODI2NzU4Mzc5OSwic2NwIjoiZUp5S1Z0SlNpZ1VFQUFEX193TnpBU2MiLCJmbG8i\
-Ojl9.CZP6Do2857JfHiYvt0giq8yTbym3tkPN3qC1ClYrpzKCYb6pNDdT1L45EaM8c17zWSg\
--MNnyAyaZkRDE6ddb6tnL6pvu6EHHppfrYqdSK9v4M7edxcueWb_taYlpKFDO3CMbMtGbJTtPX\
-5C3tjgklw3RbPd24K65GoPNLdvxX6KFB1cRb6nGS4sy0N_ooIfr9d909xtpNA5OjDZtksr3qpYrNp\
-VRiEKeJ_H95Oxl_FNHuFFdSxNo30pvvLxvh2SEhhqoofg_C5mzsKo3-VZrYWzTk1zRFa8RGxrlJs0Wx\
-Dq9DemXs-aIjVE_g613LCbuN3TnKR8nxID9EgB1GjZqOA'
+        'Authorization': 'bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjk5NjE3Njg5LjQ1MzY2NCwiaWF0IjoxNjk5NTMxMjg5LjQ1MzY2NCwianRpIjoiXzBCQVFKckxTanhFZkI3VnhNQVJsdjRGbkg1SUVBIiwiY2lkIjoiUllhZUYzcWtIcTZvRmFwZ0k3cGIzUSIsImxpZCI6InQyX21qNGJoNjdncyIsImFpZCI6InQyX21qNGJoNjdncyIsImxjYSI6MTY5ODI2NzU4Mzc5OSwic2NwIjoiZUp5S1Z0SlNpZ1VFQUFEX193TnpBU2MiLCJmbG8iOjl9.ZHx1PUlDBAey4EQ_CAzl69QSw9rivCNvbPTsCRVZWIpurS1CoEoFMF2V_H2je1nmtVnhx2KoAdEHf2nG-5bMFBj3LDIu17dnUroxXKWP5HW2U-NgV6qP9P4oNPuDQOFT_A6-EdjRL8azfBzQu_aSQr36LNczP5EOkoOx_YLljmB1pqIhRSoxZY3vY4CDZVRXWQNiMTe9UBkn53pVDhpj4rxIrVcgJzuhqd0-n9jPc757pKWcl_VjUiTQKcBn_BJXzxpRCDNHOYPqA6O0B93XKPrt1Bpv-Iy8s3oSzudZS52NjScEmadXpnlTaZSdqCZ9mG1_DHEs5DIPkIrxDYNcxQ'
+
     }
     response = get(full_url,
                    headers=headers,
